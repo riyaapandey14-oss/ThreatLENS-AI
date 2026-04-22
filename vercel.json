@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": ".vscode/run.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": ".vscode/run.py"
+    }
+  ],
+  "env": {
+    "FLASK_ENV": "production"
+  }
+}

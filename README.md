@@ -21,12 +21,18 @@ Open `http://localhost:5000`
 - NIST guidelines
 
 ## Deployment
+
+**Vercel (Free):**
+1. Push changes (done)
+2. vercel.com → New Project → Import GitHub `riyaapandey14-oss/ThreatLENS-AI`
+3. Deploy → URL: `https://threatlens-ai-xxxx.vercel.app`
+4. SQLite uses Vercel KV or switch to Postgres env var.
+
 **Render.com (Free):**
-1. Fork this repo
-2. Connect to Render  
-3. Build = `pip install -r requirements.txt`
-4. Start = `python .vscode/run.py`
-5. Live URL: `https://yourapp.onrender.com`
+1. Connect repo at render.com
+2. Build = `pip install -r requirements.txt`
+3. Start = `python .vscode/run.py`
+4. URL: `https://threatlens-ai.onrender.com`
 
 **Live Demo:** [Coming soon]
 =======
