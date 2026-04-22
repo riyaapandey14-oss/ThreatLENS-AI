@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ThreatLens AI 🚀
 
 Enterprise cybersecurity intelligence platform with:
@@ -28,3 +29,7 @@ Open `http://localhost:5000`
 5. Live URL: `https://yourapp.onrender.com`
 
 **Live Demo:** [Coming soon]
+=======
+# ThreatLENS-AI
+ThreatLens AI is a Flask-based cybersecurity dashboard that checks password strength, scans URLs for phishing risks, and uses an AI assistant to explain basic cyber threats in simple language. It shows risk results and saves scan history, helping users understand basic cybersecurity concepts in a clean, easy-to-use interface.
+>>>>>>> b9a0d1373b90c9633b86eda0c510d0320ba6ae35
