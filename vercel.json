@@ -2,17 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": ".vscode/run.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": ".vscode/run.py"
+      "dest": "api/index.py"
     }
   ],
   "env": {
-    "FLASK_ENV": "production"
+    "FLASK_ENV": "production",
+    "SECRET_KEY": "vercel-super-secret-key-2024"
   }
 }
