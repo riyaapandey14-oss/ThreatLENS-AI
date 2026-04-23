@@ -17,3 +17,6 @@ class Config:
     
     # Rate limiting 
     RATELIMIT_ENABLED = True
+    
+    # OpenAI
+    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') or None

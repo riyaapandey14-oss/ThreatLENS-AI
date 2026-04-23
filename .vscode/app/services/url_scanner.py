@@ -1,79 +1,80 @@
 import re
-import urllib.parse
 from urllib.parse import urlparse
-import math
 
 class URLScanner:
-    BADWORDS = {
-        'phishing': ['login', 'verify', 'secure', 'update', 'account', 'bank', 'paypal', 'password'],
-        'malware': ['download', 'free', 'crack', 'keygen', 'torrent'],
-        'suspicious': ['bit.ly', 'tinyurl', 'ow.ly', 'go0gle.com']
-    }
-    
-    DOMAINS = {
-        'legit': ['google.com', 'microsoft.com', 'github.com'],
-        'risky': ['ru', 'tk', 'ml', 'ga', 'cf'],
-        'suspicious': ['bit.ly', 'tinyurl', 'ow.ly']
-    }
-    
     @staticmethod
     def scan(url):
         if not url:
-            return {'risk_score': 100, 'risk_level': 'Invalid', 'details': ['Empty URL']}
+            return {
+                'result': 'DANGEROUS',
+                'risk_score': 100,
+                'reason': 'Empty URL',
+                'advice': 'Enter a valid URL'
+            }
+        
+        if not url.startswith(('http://', 'https://')):
+            url = 'https://' + url
         
         parsed = urlparse(url)
-        risk_score = 0
-        details = []
+        domain = parsed.netloc.lower().replace('www.', '')
+        full_lower = url.lower()
         
+        risk = 0
+        reasons = []
+        advice_list = []
+        
+        # HTTPS
         if parsed.scheme != 'https':
-            risk_score += 20
-            details.append('No HTTPS')
+            risk += 20
+            reasons.append('Uses HTTP (no encryption)')
+            advice_list.append('Only use HTTPS sites')
         
-        domain = parsed.netloc.lower()
-        if any(tld in domain for tld in URLScanner.DOMAINS['risky']):
-            risk_score += 15
-            details.append('Risky TLD')
-        if any(short in domain for short in URLScanner.DOMAINS['suspicious']):
-            risk_score += 25
-            details.append('URL shortener')
+        # Suspicious keywords
+        keywords = ['login', 'verify', 'free', 'bank', 'reward', 'urgent', 'update', 'account suspended']
+        if any(kw in full_lower for kw in keywords):
+            risk += 25
+            reasons.append('Suspicious keywords')
+            advice_list.append('Double-check sender/legitimacy')
         
-        path = (parsed.path + parsed.query).lower()
-        for category, words in URLScanner.BADWORDS.items():
-            for word in words:
-                if word in path:
-                    risk_score += 10
-                    details.append(f'{category.capitalize()}: {word}')
-                    break
+        # Fake domains
+        fake_indicators = ['g00gle', 'paypa1', 'pay-pal', 'rnicrosoft', 'arnazon', 'supp0rt']
+        if any(ind in domain for ind in fake_indicators) or len(domain.replace('.', '')) != len(domain):
+            risk += 40
+            reasons.append('Fake domain/homoglyph')
+            advice_list.append('Hover to see real domain')
         
-        if path:
-            path_counts = [path.count(c) for c in set(path)]
-            path_probs = [count / len(path) for count in path_counts]
-            path_entropy = -sum(p * math.log2(p) for p in path_probs if p > 0)
-            if path_entropy < 2.5:
-                risk_score += 10
-                details.append('Low entropy (obfuscated)')
+        # Shorteners
+        shorteners = ['bit.ly', 'tinyurl.com', 't.co', 'ow.ly', 'goo.gl']
+        if any(s in full_lower for s in shorteners):
+            risk += 20
+            reasons.append('URL shortener')
+            advice_list.append('Expand or avoid short links')
         
-        risk_score = min(100, risk_score)
+        # Unusual structure
+        symbols_count = len(re.findall(r'[^a-zA-Z0-9./?=&-]', full_lower))
+        param_count = len(parsed.query.split('&')) if parsed.query else 0
+        if symbols_count > 15 or param_count > 8:
+            risk += 15
+            reasons.append('Unusual structure/parameters')
+            advice_list.append('Avoid complex/obfuscated URLs')
         
-        if risk_score <= 20:
-            risk_level = 'Safe ✅'
-        elif risk_score <= 50:
-            risk_level = 'Low Risk ℹ️'
-        elif risk_score <= 80:
-            risk_level = 'High Risk ⚠️'
+        risk = min(100, risk)
+        
+        if risk <= 30:
+            result = 'SAFE'
+        elif risk <= 70:
+            result = 'SUSPICIOUS'
         else:
-            risk_level = 'Phishing! 🚨'
+            result = 'DANGEROUS'
         
-        explanation = {
-            'Safe ✅': 'Legitimate.',
-            'Low Risk ℹ️': 'Minor concerns.',
-            'High Risk ⚠️': 'Avoid clicking.',
-            'Phishing! 🚨': 'Do NOT click!'
-        }[risk_level]
+        reason_str = '; '.join(reasons) or 'No major issues'
+        advice_str = '\n- '.join(advice_list) or 'Proceed, but verify'
         
         return {
-            'risk_score': risk_score,
-            'risk_level': risk_level,
-            'details': details,
-            'explanation': explanation
+            'result': result,
+            'risk_score': round(risk),
+            'reason': reason_str,
+            'advice': advice_str,
+            'details': reasons,  # Template compat
+            'risk_level': result  # Template compat
         }

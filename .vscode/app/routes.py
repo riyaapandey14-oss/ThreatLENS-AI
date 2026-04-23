@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from datetime import datetime
 from .services.password_analyzer import PasswordAnalyzer
 from .services.url_scanner import URLScanner  
-from .services.threat_intelligence import SOCAnalystAI
+from .services.ai_assistant import AIAnalyst
 from .services.risk_engine import RiskEngine
 from .models import ScanHistory, db
 
@@ -30,16 +30,16 @@ def password():
             scan_type='password',
             input_data=pwd[:50], 
             result=str({'score': analysis['score'], 'strength': analysis['strength']}),
-            risk_score=100 - analysis['score']
+            risk_score=5 - analysis['score']  # Invert for risk
         )
         db.session.add(scan)
         db.session.commit()
         
-        ai_analysis = SOCAnalystAI.analyze(pwd, 'password', 100 - analysis['score'])
-        analysis.update({
-            'ai_response': ai_analysis['analyst_response'],
-            'details': analysis.get('checks', [])
-        })
+        context = f"Password strength analysis: score={analysis['score']}/5, strength={analysis['strength']}, reason={analysis.get('reason', '')}"
+        ai_analysis = AIAnalyst.analyze(context)
+        analysis['ai_response'] = ai_analysis.get('analyst_response', 'AI unavailable - check API key')
+        if 'reason' in analysis:
+            analysis['details'] = analysis['reason'].split('; ')
     
     return render_template("password.html", analysis=analysis)
 
@@ -54,14 +54,15 @@ def url():
         scan = ScanHistory(
             scan_type='url',
             input_data=url_input[:100],
-            result=str({'risk_score': scan_result['risk_score'], 'risk_level': scan_result['risk_level']}),
+            result=str({'risk_score': scan_result['risk_score'], 'result': scan_result['result']}),
             risk_score=scan_result['risk_score']
         )
         db.session.add(scan)
         db.session.commit()
         
-        ai_analysis = SOCAnalystAI.analyze(url_input, 'url', scan_result['risk_score'])
-        scan_result['ai_response'] = ai_analysis['analyst_response']
+        context = f"URL risk analysis: risk_score={scan_result['risk_score']}, result={scan_result['result']}, reason={scan_result.get('reason', '')}"
+        ai_analysis = AIAnalyst.analyze(context)
+        scan_result['ai_response'] = ai_analysis.get('analyst_response', 'AI unavailable - check API key')
     
     return render_template("url.html", scan_result=scan_result)
 
@@ -72,23 +73,23 @@ def ai():
     if request.method == "POST":
         query = request.form.get("message")
         
-        response_data = SOCAnalystAI.analyze(query)
+        response_data = AIAnalyst.analyze(query)
         
         # Store conversation
-        conversation.append({'user': query, 'ai': response_data})
+        conversation.append({'user': query, 'ai': response_data.get('analyst_response', 'Error')})
         session['ai_conversation'] = conversation[-10:]  # Keep last 10
         
         scan = ScanHistory(
             scan_type='ai',
             input_data=query[:50],
-            result=response_data['analyst_response'][:250],
-            risk_score=response_data['risk_score']
+            result=response_data.get('analyst_response', 'Error')[:250],
+            risk_score=response_data.get('risk_score', 50)
         )
         db.session.add(scan)
         db.session.commit()
         
         return render_template("ai.html", 
-                             analyst_response=response_data['analyst_response'],
+                             analyst_response=response_data.get('analyst_response', 'Error'),
                              conversation=conversation)
     
     return render_template("ai.html", conversation=conversation)

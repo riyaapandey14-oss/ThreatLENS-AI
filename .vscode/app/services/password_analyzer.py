@@ -1,48 +1,55 @@
 import re
-import math
-import time
 
 class PasswordAnalyzer:
     @staticmethod
     def analyze(password):
         if not password:
-            return {'score': 0, 'strength': 'empty', 'crack_time': 'instant', 'details': []}
+            return {
+                'strength': 'WEAK',
+                'score': 0,
+                'reason': 'No password provided',
+                'suggestion': 'Enter a password to analyze'
+            }
         
-        length_score = min(len(password) // 4, 25)
-        upper_score = 10 if re.search(r'[A-Z]', password) else 0
-        lower_score = 10 if re.search(r'[a-z]', password) else 0
-        digit_score = 10 if re.search(r'\\d', password) else 0
-        symbol_score = 20 if re.search(r'[^a-zA-Z0-9]', password) else 0
-        unique_chars = len(set(password))
-        repeat_penalty = max(0, 40 - unique_chars * 2)
-        
-        total_score = length_score + upper_score + lower_score + digit_score + symbol_score - repeat_penalty
-        total_score = max(0, min(100, total_score))
-        
-        # Crack time estimation (simplified)
-        entropy = unique_chars * math.log2(len(set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*')))
-        crack_time = math.exp(entropy / 32) / 10**9  # Simplified
-        
-        strength_map = {
-            (0, 39): 'Very Weak', (40, 59): 'Weak', (60, 79): 'Fair', 
-            (80, 94): 'Good', (95, 100): 'Excellent'
+        checks = {
+            'Length': len(password) >= 8,
+            'Uppercase': bool(re.search(r'[A-Z]', password)),
+            'Lowercase': bool(re.search(r'[a-z]', password)),
+            'Numbers': bool(re.search(r'\\d', password)),
+            'Symbols': bool(re.search(r'[^a-zA-Z0-9\\s]', password))
         }
         
-        strength = next(label for (low, high), label in strength_map.items() if low <= total_score <= high)
-        crack_str = f'{int(crack_time/3600/24/365):,} years' if crack_time > 1 else f'{int(crack_time*3600):,} seconds'
+        score = sum(checks.values())
         
-        details = [
-            f'Length: {len(password)} ({length_score}pts)',
-            f'Uppercase: {"Yes" if upper_score else "No"}',
-            f'Lowercase: {"Yes" if lower_score else "No"}',
-            f'Digits: {"Yes" if digit_score else "No"}',
-            f'Symbols: {"Yes" if symbol_score else "No"}',
-            f'Repeated chars: {len(password) - unique_chars}'
-        ]
+        if score <= 2:
+            strength = 'WEAK'
+        elif score <= 4:
+            strength = 'MEDIUM'
+        else:
+            strength = 'STRONG'
         
+        reasons = [f"{name}: {'PASS' if passed else 'FAIL'}" for name, passed in checks.items()]
+        
+        suggestions = []
+        if not checks['Length']:
+            suggestions.append('Use 8+ characters')
+        if not checks['Uppercase']:
+            suggestions.append('Add uppercase letters (A-Z)')
+        if not checks['Lowercase']:
+            suggestions.append('Add lowercase letters (a-z)')
+        if not checks['Numbers']:
+            suggestions.append('Add numbers (0-9)')
+        if not checks['Symbols']:
+            suggestions.append('Add special chars (!@#$%)')
+        
+        suggestion = '; '.join(suggestions) or 'Perfect password!'
+        
+        # Template compatibility
         return {
-            'score': total_score,
             'strength': strength,
-            'crack_time': crack_str,
-            'details': details
+            'score': score,
+            'reason': '; '.join(reasons),
+            'suggestion': suggestion,
+            'details': reasons  # For template
+            # Drop zxcvbn for simple logic
         }
