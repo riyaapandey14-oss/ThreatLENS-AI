@@ -22,4 +22,9 @@ coverage.xml
 .DS_Store
 .env
 .venv
+*.db
+*.sqlite
+*.sqlite3
+instance/
+.vscode/instance/
 
