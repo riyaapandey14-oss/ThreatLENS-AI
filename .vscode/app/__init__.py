@@ -14,9 +14,9 @@ def create_app():
     app = Flask(__name__, template_folder='../templates')
 
     # Debug API key (logs to terminal)
-    api_key_len = len(os.environ.get('OPENAI_API_KEY', ''))
+    api_key_len = len(os.environ.get('GROK_API_KEY', ''))
     status = 'LOADED (len=' + str(api_key_len) + ')' if api_key_len > 10 else 'MISSING - check .env'
-    print(f"🚀 [ThreatLens] OpenAI API key status: {status}")
+    print(f"🚀 [ThreatLens] Grok API key status: {status}")
 
     app.config.from_object('config.Config')
     
@@ -33,7 +33,7 @@ def create_app():
     from .routes import main
     app.register_blueprint(main)
     
-    print("ThreatLens FREE AI ready - Mistral HF + Rules!")
+    print("ThreatLens AI ready - Grok AI + Rules!")
     
     @app.errorhandler(404)
     def not_found(error):

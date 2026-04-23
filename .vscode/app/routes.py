@@ -71,7 +71,14 @@ def ai():
     conversation = session.get('ai_conversation', [])
     
     if request.method == "POST":
-        query = request.form.get("message")
+        # Handle both form data and JSON
+        if request.is_json:
+            query = request.json.get("message")
+        else:
+            query = request.form.get("message")
+        
+        if not query:
+            return {"error": "No message provided"}, 400
         
         response_data = AIAnalyst.analyze(query)
         
@@ -87,6 +94,14 @@ def ai():
         )
         db.session.add(scan)
         db.session.commit()
+        
+        # Return JSON if request was JSON, otherwise render template
+        if request.is_json:
+            return {
+                "analyst_response": response_data.get('analyst_response', 'Error'),
+                "risk_score": response_data.get('risk_score', 50),
+                "source": response_data.get('source', 'UNKNOWN')
+            }
         
         return render_template("ai.html", 
                              analyst_response=response_data.get('analyst_response', 'Error'),

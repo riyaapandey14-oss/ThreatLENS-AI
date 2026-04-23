@@ -1,23 +1,18 @@
-# ThreatLens AI - FREE OpenAI Replacement (Hugging Face + Rules)
+# Integrate Gemini AI ✅
 
-**Progress:**
-1. [x] Forms fixed
-2. [x] URL scanner rule-based
-3. [x] Password zxcvbn + rules
-4. [x] AI FREE: HF Mistral + SOCAnalyst fallback (no quota!)
-5. [ ] VirusTotal free tier
-6. [ ] Deploy
+## Steps:
+- [x] 1. Add google-generativeai to requirements.txt
+- [x] 2. Add GEMINI_API_KEY to config.py 
+- [ ] 3. Update app/__init__.py to log Gemini status
+- [x] 4. Refactor app/services/ai_assistant.py to use Gemini ✅
+- [x] 5. pip install -r requirements.txt (running)
+- [ ] 6. Restart server (CTRL+C .\start_app.bat terminal, rerun .\start_app.bat)
+- [ ] 7. Test /ai endpoint (no more random answers)
 
-**FREE AI Steps:**
-1. [ ] Install huggingface_hub
-2. [ ] Update ai_assistant.py HF client
-3. [ ] Routes use new AI
-4. [ ] Test /ai - free responses
-5. [x] Complete
 
-**Test:**
-- /password: Rule score
-- /url: Regex risk
-- /ai: FREE Mistral-7B chat
+**Your GEMINI_API_KEY provided – add to .env:**
+```
+GEMINI_API_KEY=AIzaSyCEDJFWYCrDGtVHuaB4gKrsbNQjSpzT3SU
+```
+Reload .env after adding.
 
-**Run:** start_app.bat

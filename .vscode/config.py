@@ -20,3 +20,6 @@ class Config:
     
     # OpenAI
     OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') or None
+    
+    # Gemini
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY') or None
