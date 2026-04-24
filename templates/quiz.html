@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Security Quiz - ThreatLens AI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🎯 Cybersecurity Quiz</h1>
+    <p class="page-subtitle">Test your security knowledge with 10 random questions.</p>
+</div>
+
+{% if result %}
+<div class="results-panel quiz-result">
+    <div class="quiz-score-section">
+        <div class="quiz-score-ring">
+            <div class="quiz-score-value">{{ result.score }}/{{ result.total }}</div>
+            <div class="quiz-score-percent">{{ result.percentage }}%</div>
+        </div>
+        <div class="quiz-score-message">
+            {% if result.percentage >= 80 %}
+            <span class="score-excellent">🌟 Excellent! You're a cybersecurity pro!</span>
+            {% elif result.percentage >= 60 %}
+            <span class="score-good">👍 Good job! Keep learning.</span>
+            {% else %}
+            <span class="score-improve">📚 Keep studying cybersecurity basics!</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="quiz-review">
+        <h3 class="section-heading">Review</h3>
+        {% for item in result.results %}
+        <div class="review-item {% if item.is_correct %}correct{% else %}incorrect{% endif %}">
+            <div class="review-question">{{ loop.index }}. {{ item.question }}</div>
+            <div class="review-answer">
+                <span class="answer-label">Your answer:</span>
+                <span class="answer-value">{{ item.user_answer }}</span>
+            </div>
+            {% if not item.is_correct %}
+            <div class="review-correct">
+                <span class="answer-label">Correct:</span>
+                <span class="answer-value correct-answer">{{ item.correct_answer }}</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="/quiz" class="btn btn-primary btn-block mt-4">Try Again</a>
+</div>
+{% elif questions %}
+<form method="POST" class="quiz-form" onsubmit="showLoading()">
+    <div class="quiz-progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    {% for q in questions %}
+    <div class="quiz-question" data-index="{{ loop.index }}">
+        <div class="question-number">Question {{ loop.index }} of {{ questions|length }}</div>
+        <h3 class="question-text">{{ q.question }}</h3>
+        <div class="options-list">
+            {% for opt in q.options %}
+            <label class="option-label">
+                <input type="radio" name="q{{ q.id }}" value="{{ loop.index0 }}" required>
+                <span class="option-text">{{ opt }}</span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary btn-block">
+        <span class="btn-text">Submit Quiz</span>
+        <span class="btn-loader hidden">⏳</span>
+    </button>
+</form>
+{% else %}
+<div class="analyzer-form text-center">
+    <a href="/quiz" class="btn btn-primary btn-lg">Start Quiz</a>
+</div>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Email Analyzer - ThreatLens AI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">📧 Phishing Email Analyzer</h1>
+    <p class="page-subtitle">Analyze email content for phishing indicators and social engineering.</p>
+</div>
+
+<div class="analyzer-form">
+    <form method="POST" class="input-form" onsubmit="showLoading()">
+        <textarea 
+            name="email_text" 
+            placeholder="Paste the full email content here (headers, body, links)..."
+            class="form-textarea"
+            rows="10"
+            required
+        ></textarea>
+        <button type="submit" class="btn btn-primary btn-block">
+            <span class="btn-text">Analyze Email</span>
+            <span class="btn-loader hidden">⏳</span>
+        </button>
+    </form>
+</div>
+
+{% if result %}
+<div class="results-panel">
+    <div class="risk-badge risk-{{ result.risk_level.lower() }}">
+        <div class="risk-icon">{{ '✅' if result.risk_level == 'LOW' else '⚠️' if result.risk_level == 'MEDIUM' else '🚨' }}</div>
+        <div class="risk-level">{{ result.risk_level }} RISK</div>
+        <div class="risk-score">Score: {{ result.risk_score }}/100</div>
+        <div class="risk-label-text">{{ result.risk_label }}</div>
+    </div>
+
+    <div class="result-section">
+        <h3 class="section-heading">🚩 Red Flags Detected</h3>
+        <div class="flags-list">
+            {% for flag in result.red_flags %}
+            <div class="flag-item">
+                <span class="flag-icon">🚩</span>
+                <span>{{ flag }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="result-section">
+        <h3 class="section-heading">✅ Recommended Action</h3>
+        <div class="action-box">
+            <p class="action-text">{{ result.action }}</p>
+        </div>
+        {% for rec in result.recommendations %}
+        <div class="rec-item">
+            <span class="rec-icon">💡</span>
+            <span>{{ rec }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+

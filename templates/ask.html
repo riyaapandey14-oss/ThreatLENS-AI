@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Cyber Knowledge AI - ThreatLens AI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🤖 Cyber Knowledge Assistant</h1>
+    <p class="page-subtitle">Ask anything about cybersecurity. Instant answers from local intelligence.</p>
+</div>
+
+<div class="chat-container">
+    <form method="POST" class="chat-form" onsubmit="showLoading()">
+        <div class="chat-input-group">
+            <input 
+                type="text" 
+                name="question" 
+                placeholder="Ask about phishing, MFA, ransomware, passwords, Wi-Fi safety..."
+                class="chat-input"
+                required
+                value=""
+            >
+            <button type="submit" class="btn btn-primary chat-btn">
+                <span class="btn-text">Ask</span>
+                <span class="btn-loader hidden">⏳</span>
+            </button>
+        </div>
+    </form>
+
+    {% if response %}
+    <div class="chat-response">
+        <div class="response-header">
+            <span class="response-icon">🤖</span>
+            <span class="response-title">{{ response.title }}</span>
+        </div>
+        <div class="response-body">
+            <pre class="response-text">{{ response.response }}</pre>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="topic-grid">
+    <h3 class="topic-heading">💡 Popular Topics</h3>
+    <div class="topic-tags">
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('What is phishing and how do I detect it?'); return false;">Phishing</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('What are MFA benefits?'); return false;">MFA</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('How does ransomware work?'); return false;">Ransomware</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('What is malware?'); return false;">Malware</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('Password hygiene tips'); return false;">Passwords</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('Is public Wi-Fi safe?'); return false;">Wi-Fi</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('What is social engineering?'); return false;">Social Eng.</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('What is a DDoS attack?'); return false;">DDoS</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('What to do after a data breach?'); return false;">Data Breach</a>
+        <a href="/ask" class="topic-tag" onclick="prefillQuestion('Safe browsing tips'); return false;">Browsing</a>
+    </div>
+</div>
+{% endblock %}
+
