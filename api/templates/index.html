@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}ThreatLens AI - Dashboard{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        ThreatLens AI Active
+    </div>
+    <h1 class="hero-title">
+        Your <span class="gradient-text">Cybersecurity</span><br>Intelligence Hub
+    </h1>
+    <p class="hero-subtitle">
+        Advanced rule-based detection for passwords, URLs, emails, and cyber knowledge.
+        No APIs required. Fully local intelligence.
+    </p>
+    <div class="warning-banner">
+        <span class="warning-icon">⚠️</span>
+        <span><strong>Security Notice:</strong> Do not enter real passwords or sensitive personal data into this tool. Use test data only.</span>
+    </div>
+</div>
+
+<div class="tools-grid">
+    <a href="/password" class="tool-card">
+        <div class="tool-icon">🔐</div>
+        <h3 class="tool-title">Password Analyzer</h3>
+        <p class="tool-desc">Check strength, entropy, and crack-time estimates with actionable suggestions.</p>
+        <div class="tool-arrow">→</div>
+    </a>
+
+    <a href="/url" class="tool-card">
+        <div class="tool-icon">🌐</div>
+        <h3 class="tool-title">URL Scanner</h3>
+        <p class="tool-desc">Detect phishing, suspicious keywords, and malicious patterns in any link.</p>
+        <div class="tool-arrow">→</div>
+    </a>
+
+    <a href="/email" class="tool-card">
+        <div class="tool-icon">📧</div>
+        <h3 class="tool-title">Email Analyzer</h3>
+        <p class="tool-desc">Identify phishing emails through urgency, threats, and credential requests.</p>
+        <div class="tool-arrow">→</div>
+    </a>
+
+    <a href="/ask" class="tool-card">
+        <div class="tool-icon">🤖</div>
+        <h3 class="tool-title">Cyber Knowledge AI</h3>
+        <p class="tool-desc">Ask about phishing, MFA, ransomware, and more. Instant local answers.</p>
+        <div class="tool-arrow">→</div>
+    </a>
+
+    <a href="/quiz" class="tool-card">
+        <div class="tool-icon">🎯</div>
+        <h3 class="tool-title">Security Quiz</h3>
+        <p class="tool-desc">Test your cybersecurity knowledge with 10 random multiple-choice questions.</p>
+        <div class="tool-arrow">→</div>
+    </a>
+</div>
+
+<div class="features-section">
+    <h2 class="section-title">Why ThreatLens AI?</h2>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h4>Lightning Fast</h4>
+            <p>All analysis runs locally in milliseconds. No API latency, no rate limits.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h4>Privacy First</h4>
+            <p>Your data never leaves this server. No cloud processing, no data logging.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🧠</div>
+            <h4>Smart Rules</h4>
+            <p>Advanced pattern detection with 50+ cybersecurity knowledge topics.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🎨</div>
+            <h4>Polished UI</h4>
+            <p>Dark cyber theme with neon accents, animations, and responsive design.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
