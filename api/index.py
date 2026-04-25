@@ -1,12 +1,11 @@
 import sys
 import os
-sys.path.insert(0, './.vscode')
 
-from app import create_app
+# Add project root to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-app = create_app()
+from app import app
 
-# Vercel requires WSGI callable
-if __name__ == "__main__":
-    app.run()
+# Vercel requires WSGI callable named 'app'
+# The Flask app is already created in app.py
 

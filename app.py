@@ -10,11 +10,19 @@ Features:
 - Cyber knowledge base
 - Security quiz
 """
+import os
 from flask import Flask
 from routes import main
 
-# Initialize Flask app
-app = Flask(__name__, template_folder='templates', static_folder='static')
+# Get absolute path to project root for Vercel compatibility
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Initialize Flask app with absolute paths
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, 'templates'),
+    static_folder=os.path.join(BASE_DIR, 'static')
+)
 
 # Configuration
 app.secret_key = 'threatlens-ai-secret-key-2024-secure-local-only'
