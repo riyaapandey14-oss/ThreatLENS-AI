@@ -61,15 +61,17 @@ def ask():
 @main.route('/quiz', methods=['GET', 'POST'])
 def quiz():
     if request.method == 'POST':
+        # Grade the quiz using the same questions stored in session
         answers = {k[1:]: int(v) for k, v in request.form.items() if k.startswith('q')}
         quiz_questions = session.get('quiz_questions', [])
         if not quiz_questions:
+            # Fallback: regenerate if session expired
             quiz_questions = QuizManager.get_quiz(10)
         result = QuizManager.grade(quiz_questions, answers)
         session.pop('quiz_questions', None)
         return render_template('quiz.html', result=result, questions=None)
 
+    # Show quiz - store in session so grading uses same questions
     questions = QuizManager.get_quiz(10)
     session['quiz_questions'] = questions
     return render_template('quiz.html', questions=questions, result=None)
-

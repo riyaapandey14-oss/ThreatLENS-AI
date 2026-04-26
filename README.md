@@ -1,41 +1,37 @@
-<<<<<<< HEAD
-# ThreatLens AI 🚀
+# ThreatLens AI 🛡️
 
-Enterprise cybersecurity intelligence platform with:
-- Password strength analyzer (entropy + crack time)
-- Phishing URL scanner 
-- AI SOC analyst (50+ topics)
-- Real-time security dashboard
+A Flask-based cybersecurity dashboard with zero external APIs and zero databases. All analysis runs locally using rule-based intelligence.
+
+## Features
+- **Password Strength Analyzer** — Entropy scoring, crack-time estimates, actionable suggestions
+- **Phishing URL Scanner** — Detects suspicious keywords, IP addresses, shorteners, fake brands
+- **Email Phishing Detector** — Identifies urgency, threats, credential requests, and suspicious links
+- **Cyber Knowledge AI** — 12+ topics with intent matching (no cloud AI required)
+- **Security Quiz** — Random questions to test awareness
 
 ## Quick Start
 ```bash
 pip install -r requirements.txt
-python .vscode/run.py
+python app.py
 ```
 Open `http://localhost:5000`
 
-## Features
-- Professional dark theme (TailwindCSS)
-- SQLite persistence
-- MITRE ATT&CK references
-- NIST guidelines
+## Tech Stack
+- Flask + Jinja2 + Werkzeug
+- Pure CSS dark cyber theme (no Tailwind build step)
+- 100% local — no OpenAI, no Gemini, no database
 
 ## Deployment
 
-**Vercel (Free):**
-1. Push changes (done)
-2. vercel.com → New Project → Import GitHub `riyaapandey14-oss/ThreatLENS-AI`
-3. Deploy → URL: `https://threatlens-ai-xxxx.vercel.app`
-4. SQLite uses Vercel KV or switch to Postgres env var.
+**Vercel (Serverless):**
+- Uses `api/index.py` as entry point
+- Static files served via `vercel.json` routes
 
-**Render.com (Free):**
-1. Connect repo at render.com
-2. Build = `pip install -r requirements.txt`
-3. Start = `python .vscode/run.py`
-4. URL: `https://threatlens-ai.onrender.com`
+**Render.com:**
+- Build: `pip install -r requirements.txt`
+- Start: `gunicorn app:app`
 
-**Live Demo:** [Coming soon]
-=======
-# ThreatLENS-AI
-ThreatLens AI is a Flask-based cybersecurity dashboard that checks password strength, scans URLs for phishing risks, and uses an AI assistant to explain basic cyber threats in simple language. It shows risk results and saves scan history, helping users understand basic cybersecurity concepts in a clean, easy-to-use interface.
->>>>>>> b9a0d1373b90c9633b86eda0c510d0320ba6ae35
+**Local Development:**
+```bash
+start_app.bat   # Windows
+python app.py   # Any OS

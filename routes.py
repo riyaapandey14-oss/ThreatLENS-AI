@@ -3,7 +3,7 @@ ThreatLens AI - Flask Routes
 Modular blueprint with all application endpoints.
 """
 
-from flask import Blueprint, render_template, request, jsonify, session
+from flask import Blueprint, render_template, request, session
 from utils import PasswordAnalyzer, URLScanner, EmailAnalyzer, KnowledgeBase, QuizManager
 
 main = Blueprint('main', __name__)
@@ -38,6 +38,14 @@ def email():
     if request.method == 'POST':
         email_text = request.form.get('email_text', '')
         result = EmailAnalyzer.analyze(email_text)
+        # Ensure action field exists for template compatibility
+        if result and 'action' not in result:
+            if result['risk_level'] == 'HIGH':
+                result['action'] = 'Do not click any links. Delete the email and report it to your security team.'
+            elif result['risk_level'] == 'MEDIUM':
+                result['action'] = 'Be cautious. Verify sender independently before taking any action.'
+            else:
+                result['action'] = 'Low risk detected, but always remain vigilant.'
     return render_template('email.html', result=result)
 
 
