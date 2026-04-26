@@ -3,7 +3,7 @@ ThreatLens AI - Flask Routes
 Modular blueprint with all application endpoints.
 """
 
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, jsonify, session
 from utils import PasswordAnalyzer, URLScanner, EmailAnalyzer, KnowledgeBase, QuizManager
 
 main = Blueprint('main', __name__)

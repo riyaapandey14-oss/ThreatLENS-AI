@@ -309,29 +309,4 @@ body::after {
 .score-improve { color:var(--n-yellow); text-shadow:0 0 15px var(--n-yellow); }
 .quiz-review { text-align:left; margin-top:2rem; }
 .review-item { background:var(--card); border:1px solid var(--bdr2); border-radius:0.75rem; padding:1.25rem; margin-bottom:1rem; }
-.review-item.correct { border-left:4px solid var(--n-green); box-shadow:var(--gg); }
-.review-item.incorrect { border-left:4px solid var(--n-red); box-shadow:var(--gr); }
-.review-question { font-weight:600; margin-bottom:0.75rem; color:var(--txt); }
-.review-answer, .review-correct { font-size:0.85rem; color:var(--txt2); margin-bottom:0.25rem; font-family:'Share Tech Mono',monospace; }
-.correct-answer { color:var(--n-green); }
-.mt-4 { margin-top:1rem; }
-.text-center { text-align:center; }
-
-/* Footer */
-.footer { border-top:1px solid var(--bdr); padding:2rem 0; text-align:center; margin-top:4rem; position:relative; }
-.footer::before { content:''; position:absolute; top:-1px; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--n-cyan),transparent); box-shadow:var(--gc); }
-.footer-content { color:var(--txt3); font-size:0.85rem; font-family:'Orbitron',sans-serif; letter-spacing:1px; }
-.footer-sub { margin-top:0.5rem; font-size:0.75rem; font-family:'Share Tech Mono',monospace; }
-
-/* Responsive */
-@media (max-width:768px) {
-    .nav-links { display:none; }
-    .mobile-menu-btn { display:block; }
-    .mobile-menu.active { display:block; }
-    .hero-title { font-size:2rem; }
-    .input-group, .chat-input-group { flex-direction:column; }
-    .tools-grid { grid-template-columns:1fr; }
-    .score-section { flex-direction:column; }
-    .page-title { font-size:1.6rem; }
-}
-
+.review-item.correct { border-left:

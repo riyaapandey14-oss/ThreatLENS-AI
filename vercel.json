@@ -8,10 +8,6 @@
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
@@ -21,3 +17,4 @@
     "SECRET_KEY": "vercel-super-secret-key-2024"
   }
 }
+

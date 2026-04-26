@@ -1,11 +1,12 @@
-# ThreatLens AI Cleanup & Sync Tasks
+# Fix Flask Static Files for Vercel/Render Deployment
 
-- [ ] Fix README.md - resolve merge conflict markers
-- [ ] Update root routes.py - add missing `action` field for email analysis
-- [ ] Sync api/utils.py with root utils.py (more complete version)
-- [ ] Sync api/routes.py with updated root routes.py
-- [ ] Sync api/templates/ with root templates/
-- [ ] Sync api/static/ with root static/
-- [ ] Clean up old .vscode/ app code (remove app/, templates/, run.py, config.py)
-- [ ] Verify app runs correctly
+## Steps
+- [x] 1. Read and analyze all project files
+- [x] 2. Identify root cause: vercel.json routes ALL traffic to Python handler
+- [x] 3. Fix vercel.json — add `/static/*` route before catch-all
+- [x] 4. Verify api/app.py static_folder path is correct
+- [x] 5. Verify api/templates/base.html uses url_for() correctly
+- [x] 6. Ensure api/static/ has all assets (style.css, script.js)
+- [x] 7. Clean up root-level duplicate templates/static folders
+- [x] 8. Provide final corrected project structure
 
