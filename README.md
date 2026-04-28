@@ -26,11 +26,7 @@ Open `http://localhost:5000`
 **Vercel (Serverless):**
 - Uses `api/index.py` as entry point
 - Static files served via `vercel.json` routes
-- Live URL: [https://threat-lens-oxuzf1fvp-riyaapandey14-4107s-projects.vercel.app](https://threat-lens-oxuzf1fvp-riyaapandey14-4107s-projects.vercel.app)
-
-**Render.com:**
-- Build: `pip install -r requirements.txt`
-- Start: `gunicorn app:app`
+- Live URL: [https://threatlens-ai-zeta.vercel.app/](https://threatlens-ai-zeta.vercel.app/)
 
 **Local Development:**
 ```bash
